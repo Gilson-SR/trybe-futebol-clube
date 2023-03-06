@@ -27,11 +27,22 @@ export default class MatchService {
     await this.model.update({ inProgress: false }, { where: { id } });
   }
 
-  updateMatches(id: number, homeTeamGoals: number, awayTeamGoals: number):
+  async updateMatches(id: number, homeTeamGoals: number, awayTeamGoals: number):
   Promise<number[] | undefined> {
     return this.model.update(
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
+  }
+
+  async newMatch(homeTeamId: number, awayTeamId: number, homeTeamGoals: Date, awayTeamGoals: string)
+    : Promise<Matches> {
+    return this.model.create({
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    });
   }
 }

@@ -22,4 +22,11 @@ export default class MatchController {
     await this.matchesService.updateMatches(Number(id), homeTeamGoals, awayTeamGoals);
     res.status(200).json({ message: 'Placar Alterado' });
   }
+
+  async newMatch(req: Request, res: Response): Promise<Response | void> {
+    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
+    const match = await
+    this.matchesService.newMatch(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+    res.status(201).json(match);
+  }
 }
