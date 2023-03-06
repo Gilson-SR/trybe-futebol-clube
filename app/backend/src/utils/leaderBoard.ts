@@ -1,4 +1,5 @@
 import { IMatch } from '../interfaces/IMatch';
+import { Ileaderboard } from '../interfaces/ILeaderBoard';
 
 const getTeams = {
   name: '',
@@ -9,6 +10,8 @@ const getTeams = {
   totalLosses: 0,
   goalsFavor: 0,
   goalsOwn: 0,
+  goalsBalance: 0,
+  efficiency: 0,
 };
 
 const getResetTeams = () => {
@@ -19,16 +22,18 @@ const getResetTeams = () => {
   getTeams.totalLosses = 0;
   getTeams.goalsFavor = 0;
   getTeams.goalsOwn = 0;
+  getTeams.goalsBalance = 0;
+  getTeams.efficiency = 0;
 };
 
-const getVictoryHome = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getVictoryHome = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 3;
   getTeams.totalVictories += 1;
   getTeams.goalsFavor += homeTeamGoals;
   getTeams.goalsOwn += awayTeamGoals;
 };
 
-const getVictoryAway = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getVictoryAway = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 3;
   getTeams.totalVictories += 1;
   getTeams.goalsFavor += awayTeamGoals;
@@ -42,44 +47,44 @@ const getDrawHome = (homeTeamGoals:number, awayTeamGoals:number) => {
   getTeams.goalsOwn += awayTeamGoals;
 };
 
-const getDrawAway = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getDrawAway = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 1;
   getTeams.totalDraws += 1;
   getTeams.goalsFavor += awayTeamGoals;
   getTeams.goalsOwn += homeTeamGoals;
 };
 
-const getDefeatHome = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getDefeatHome = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 0;
   getTeams.totalLosses += 1;
   getTeams.goalsFavor += homeTeamGoals;
   getTeams.goalsOwn += awayTeamGoals;
 };
 
-const getDefeatAway = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getDefeatAway = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 0;
   getTeams.totalLosses += 1;
   getTeams.goalsFavor += awayTeamGoals;
   getTeams.goalsOwn += homeTeamGoals;
 };
 
-const getPointsHome = ((matches: IMatch[]) => {
+const getPointsHome = (matches: IMatch[]) => {
   matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
-    if (homeTeamGoals > awayTeamGoals) getVictoryHome(homeTeamGoals, awayTeamGoals);
-    if (homeTeamGoals === awayTeamGoals) getDrawHome(homeTeamGoals, awayTeamGoals);
-    if (homeTeamGoals < awayTeamGoals) getDefeatHome(homeTeamGoals, awayTeamGoals);
+    if (homeTeamGoals > awayTeamGoals) { getVictoryHome(homeTeamGoals, awayTeamGoals); }
+    if (homeTeamGoals === awayTeamGoals) { getDrawHome(homeTeamGoals, awayTeamGoals); }
+    if (homeTeamGoals < awayTeamGoals) { getDefeatHome(homeTeamGoals, awayTeamGoals); }
   });
-});
+};
 
-const getPointsAway = ((matches:IMatch[]) => {
+const getPointsAway = (matches: IMatch[]) => {
   matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
-    if (homeTeamGoals > awayTeamGoals) getVictoryAway(homeTeamGoals, awayTeamGoals);
-    if (homeTeamGoals === awayTeamGoals) getDrawAway(homeTeamGoals, awayTeamGoals);
-    if (homeTeamGoals < awayTeamGoals) getDefeatAway(homeTeamGoals, awayTeamGoals);
+    if (homeTeamGoals > awayTeamGoals) { getVictoryAway(homeTeamGoals, awayTeamGoals); }
+    if (homeTeamGoals === awayTeamGoals) { getDrawAway(homeTeamGoals, awayTeamGoals); }
+    if (homeTeamGoals < awayTeamGoals) { getDefeatAway(homeTeamGoals, awayTeamGoals); }
   });
-});
+};
 
-const getTeamsHome = (name:string, matches:IMatch[]) => {
+const getTeamsHome = (name: string, matches: IMatch[]) => {
   if (name !== getTeams.name) {
     getResetTeams();
   }
@@ -87,10 +92,15 @@ const getTeamsHome = (name:string, matches:IMatch[]) => {
   getPointsHome(matches);
   getTeams.totalGames += 1;
 
+  getTeams.goalsBalance = getTeams.goalsFavor - getTeams.goalsOwn;
+  getTeams.efficiency = Number(
+    ((getTeams.totalPoints / (getTeams.totalGames * 3)) * 100).toFixed(2),
+  );
+
   return getTeams;
 };
 
-const getTeamsAway = (name:string, matches:IMatch[]) => {
+const getTeamsAway = (name: string, matches: IMatch[]) => {
   if (name !== getTeams.name) {
     getResetTeams();
   }
@@ -101,4 +111,21 @@ const getTeamsAway = (name:string, matches:IMatch[]) => {
   return getTeams;
 };
 
-export { getTeamsHome, getTeamsAway };
+const TeamsSorteds = (matches: Ileaderboard[]) =>
+  matches.sort((teamA, teamB) => {
+    if (teamB.totalPoints !== teamA.totalPoints) {
+      return teamB.totalPoints - teamA.totalPoints;
+    }
+    if (teamB.totalVictories !== teamA.totalVictories) {
+      return teamB.totalVictories - teamA.totalVictories;
+    }
+    if (teamB.goalsBalance !== teamA.goalsBalance) {
+      return teamB.goalsBalance - teamA.goalsBalance;
+    }
+    if (teamB.goalsFavor !== teamA.goalsFavor) {
+      return teamB.goalsFavor - teamA.goalsFavor;
+    }
+    return teamB.goalsOwn - teamA.goalsFavor;
+  });
+
+export { getTeamsHome, getTeamsAway, TeamsSorteds };

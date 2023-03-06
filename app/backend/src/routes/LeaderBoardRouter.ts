@@ -1,9 +1,12 @@
 import { Router, Request, Response } from 'express';
 import LeaderBoardController from '../controllers/LeaderBoardController';
 
-const leaderBoardRoutes = Router();
+const leaderBoardRouter = Router();
 
-leaderBoardRoutes.get('/home', (req: Request, res: Response) =>
+leaderBoardRouter.get('/home', (req: Request, res: Response) =>
   LeaderBoardController.getLeaderBoard(req, res));
 
-export default leaderBoardRoutes;
+leaderBoardRouter.get('/away', (req: Request, res: Response) =>
+  LeaderBoardController.getLeaderBoardAway(req, res));
+
+export default leaderBoardRouter;

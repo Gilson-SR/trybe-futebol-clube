@@ -1,6 +1,7 @@
 import Matches from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
-import { getTeamsHome } from '../utils/leaderBoard';
+import { ITeam } from '../interfaces/ITeam';
+import { getTeamsHome, getTeamsAway, TeamsSorteds } from '../utils/leaderBoard';
 
 export default class LeaderBoardService {
   static async getLeaderBoard() {
@@ -19,6 +20,25 @@ export default class LeaderBoardService {
     });
 
     const TeamsResults = await Promise.all(homeTeams);
-    return TeamsResults;
+    const sortedTeams = TeamsSorteds(TeamsResults);
+    return sortedTeams;
+  }
+
+  static async getLeaderBoardAway() {
+    const teams = await Team.findAll() as ITeam[];
+    const teamsAwayStats = await Promise.all(
+      teams.map(async (team) => {
+        const awayTeamMatches = await Matches.findAll({
+          where: { awayTeamId: team.id, inProgress: false },
+        });
+        const teamAwayStats = await Promise.all(
+          awayTeamMatches.map((match) => getTeamsAway(team.teamName, [match])),
+        );
+        const teamsAllStats = teamAwayStats[awayTeamMatches.length - 1];
+        return { ...teamsAllStats };
+      }),
+    );
+    const resultsSorted = TeamsSorteds(teamsAwayStats);
+    return resultsSorted;
   }
 }
