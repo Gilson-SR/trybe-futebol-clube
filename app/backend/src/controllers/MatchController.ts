@@ -9,4 +9,10 @@ export default class MatchController {
     const matches = await this.matchesService.getAll(inProgress);
     res.status(200).json(matches);
   }
+
+  async finished(req: Request, res: Response): Promise<Response | void> {
+    const { id } = req.params;
+    await this.matchesService.finished(Number(id));
+    res.status(200).json({ message: 'Finished' });
+  }
 }

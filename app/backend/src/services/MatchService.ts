@@ -21,4 +21,9 @@ export default class MatchService {
     }
     return matches;
   }
+
+  async finished(id: number): Promise<void> {
+    await this.model.findByPk(id);
+    await this.model.update({ inProgress: false }, { where: { id } });
+  }
 }
