@@ -2,10 +2,10 @@ import { ModelStatic } from 'sequelize';
 import Matches from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 
-export default class MatchesService {
+export default class MatchService {
   model: ModelStatic<Matches> = Matches;
 
-  async getAll(): Promise<Matches[]> {
+  async getAll(inProgress: unknown): Promise<Matches[]> {
     const matches = await this.model.findAll(
       { include: [
         { model: Team, as: 'homeTeam', attributes: ['teamName'] },
@@ -13,6 +13,12 @@ export default class MatchesService {
       ],
       },
     );
+    if (inProgress === 'true') {
+      return matches.filter((match) => match.inProgress === true);
+    }
+    if (inProgress === 'false') {
+      return matches.filter((match) => match.inProgress === false);
+    }
     return matches;
   }
 }

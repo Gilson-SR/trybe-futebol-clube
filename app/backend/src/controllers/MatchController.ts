@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
-import MatchesService from '../services/MatchService';
+import MatchService from '../services/MatchService';
 
-export default class MatchesController {
-  constructor(private matchesService = new MatchesService()) {}
+export default class MatchController {
+  constructor(private matchesService = new MatchService()) {}
 
   public async getAll(req: Request, res: Response): Promise<Response | void> {
-    const matches = await this.matchesService.getAll();
+    const { inProgress } = req.query;
+    const matches = await this.matchesService.getAll(inProgress);
     res.status(200).json(matches);
   }
 }
