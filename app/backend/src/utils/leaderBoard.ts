@@ -1,5 +1,5 @@
 import { IMatch } from '../interfaces/IMatch';
-import { Ileaderboard } from '../interfaces/ILeaderBoard';
+import { ILeaderBoard } from '../interfaces/ILeaderBoard';
 
 const getTeams = {
   name: '',
@@ -111,7 +111,7 @@ const getTeamsAway = (name: string, matches: IMatch[]) => {
   return getTeams;
 };
 
-const TeamsSorteds = (matches: Ileaderboard[]) =>
+const TeamsSorteds = (matches: ILeaderBoard[]) =>
   matches.sort((teamA, teamB) => {
     if (teamB.totalPoints !== teamA.totalPoints) {
       return teamB.totalPoints - teamA.totalPoints;
