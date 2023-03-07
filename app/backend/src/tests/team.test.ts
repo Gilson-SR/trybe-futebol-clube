@@ -13,14 +13,14 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testando Team', () => {
-  describe('Test 1', () => {
+describe('Seu teste', () => {
+  describe('Testes da seção Teams', () => {
     afterEach(() => {
       sinon.restore();
     });
-
-    it('', async () => {
-
+  
+    it('Testando camada service - getAll', async () => {
+  
       const teams :Team[] = [ new Team({ id: 1, teamName: 'Teste' }) ];
       sinon.stub(Team, 'findAll').resolves(teams);
     const teamService = new TeamService();
@@ -32,7 +32,7 @@ describe('Testando Team', () => {
     expect(result).to.be.an('array');
   });
 
-  it('', async () => {
+  it('Testando camada service - getById', async () => {
     const teams :Team = new Team({ id: 1, teamName: 'Teste' });
     sinon.stub(Team, 'findByPk').resolves(teams);
     const teamService = new TeamService();
@@ -43,7 +43,7 @@ describe('Testando Team', () => {
     expect(result).to.be.an('object');
   });
 
-  it('', async () => {
+  it('Testando camada controler - getAll', async () => {
     const teams :Team[] = [ new Team({ id: 1, teamName: 'Teste' }) ];
     sinon.stub(Team, 'findAll').resolves(teams);
     const teamService = new TeamService();
@@ -55,7 +55,7 @@ describe('Testando Team', () => {
     expect(result.body).to.be.deep.eq(teams.map((team) => team.dataValues));
   });
 
-  it('', async () => {
+  it('Testando camada controler - getById', async () => {
     const teams :Team = new Team({ id: 1, teamName: 'Teste' });
     sinon.stub(Team, 'findByPk').resolves(teams);
     const teamService = new TeamService();

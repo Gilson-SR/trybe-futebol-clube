@@ -1,5 +1,5 @@
-import { IMatch } from '../interfaces/IMatch';
-import { ILeaderBoard } from '../interfaces/ILeaderBoard';
+import { IMatches } from '../interfaces/IMatch';
+import { Ileaderboard } from '../interfaces/ILeaderBoard';
 
 const getTeams = {
   name: '',
@@ -40,7 +40,7 @@ const getVictoryAway = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.goalsOwn += homeTeamGoals;
 };
 
-const getDrawHome = (homeTeamGoals:number, awayTeamGoals:number) => {
+const getDrawHome = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.totalPoints += 1;
   getTeams.totalDraws += 1;
   getTeams.goalsFavor += homeTeamGoals;
@@ -68,7 +68,7 @@ const getDefeatAway = (homeTeamGoals: number, awayTeamGoals: number) => {
   getTeams.goalsOwn += homeTeamGoals;
 };
 
-const getPointsHome = (matches: IMatch[]) => {
+const getPointsHome = (matches: IMatches[]) => {
   matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
     if (homeTeamGoals > awayTeamGoals) { getVictoryHome(homeTeamGoals, awayTeamGoals); }
     if (homeTeamGoals === awayTeamGoals) { getDrawHome(homeTeamGoals, awayTeamGoals); }
@@ -76,7 +76,7 @@ const getPointsHome = (matches: IMatch[]) => {
   });
 };
 
-const getPointsAway = (matches: IMatch[]) => {
+const getPointsAway = (matches: IMatches[]) => {
   matches.forEach(({ homeTeamGoals, awayTeamGoals }) => {
     if (homeTeamGoals > awayTeamGoals) { getVictoryAway(homeTeamGoals, awayTeamGoals); }
     if (homeTeamGoals === awayTeamGoals) { getDrawAway(homeTeamGoals, awayTeamGoals); }
@@ -84,7 +84,7 @@ const getPointsAway = (matches: IMatch[]) => {
   });
 };
 
-const getTeamsHome = (name: string, matches: IMatch[]) => {
+const getTeamsHome = (name: string, matches: IMatches[]) => {
   if (name !== getTeams.name) {
     getResetTeams();
   }
@@ -96,11 +96,10 @@ const getTeamsHome = (name: string, matches: IMatch[]) => {
   getTeams.efficiency = Number(
     ((getTeams.totalPoints / (getTeams.totalGames * 3)) * 100).toFixed(2),
   );
-
   return getTeams;
 };
 
-const getTeamsAway = (name: string, matches: IMatch[]) => {
+const getTeamsAway = (name: string, matches: IMatches[]) => {
   if (name !== getTeams.name) {
     getResetTeams();
   }
@@ -111,7 +110,7 @@ const getTeamsAway = (name: string, matches: IMatch[]) => {
   return getTeams;
 };
 
-const TeamsSorteds = (matches: ILeaderBoard[]) =>
+const TeamsSorteds = (matches: Ileaderboard[]) =>
   matches.sort((teamA, teamB) => {
     if (teamB.totalPoints !== teamA.totalPoints) {
       return teamB.totalPoints - teamA.totalPoints;

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import TeamService from '../services/TeamService';
 
-export default async function matchValidation(req: Request, res: Response, next: NextFunction) {
+export default async function validateMatches(req: Request, res: Response, next: NextFunction) {
   const { homeTeamId, awayTeamId } = req.body;
 
   const teamService = new TeamService();

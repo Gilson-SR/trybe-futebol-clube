@@ -1,23 +1,23 @@
 import { Router, Request, Response } from 'express';
 import UserService from '../services/UserService';
 import UserController from '../controllers/UserController';
-import loginValidation from '../middlewares/loginValidation';
-import tokenValidation from '../middlewares/tokenValidation';
+import validateLogin from '../middlewares/loginValidation';
+import validateToken from '../middlewares/tokenValidation';
 
-const userRouter = Router();
+const userRoutes = Router();
 
 const userService = new UserService();
 const userController = new UserController(userService);
 
-userRouter.post(
+userRoutes.post(
   '/',
-  loginValidation,
+  validateLogin,
   (req: Request, res: Response) => userController.login(req, res),
 
-  userRouter.get(
+  userRoutes.get(
     '/role',
-    tokenValidation,
+    validateToken,
     (req: Request, res: Response) => userController.loginRole(req, res),
   ),
 );
-export default userRouter;
+export default userRoutes;

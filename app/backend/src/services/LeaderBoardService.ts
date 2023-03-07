@@ -7,7 +7,7 @@ export default class LeaderBoardService {
   static async getLeaderBoard() {
     const teams = await Team.findAll();
 
-    const homeTeams:Array<unknown> = await teams.map(async (team) => {
+    const homeTeams = await teams.map(async (team) => {
       const homeMatches = await Matches.findAll(
         { where: { homeTeamId: team.id, inProgress: false } },
       );

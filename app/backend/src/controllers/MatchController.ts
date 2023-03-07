@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import MatchService from '../services/MatchService';
+import MatchesService from '../services/MatchService';
 
-export default class MatchController {
-  constructor(private matchesService = new MatchService()) {}
+export default class MatchesController {
+  constructor(private matchesService = new MatchesService()) {}
 
   public async getAll(req: Request, res: Response): Promise<Response | void> {
     const { inProgress } = req.query;

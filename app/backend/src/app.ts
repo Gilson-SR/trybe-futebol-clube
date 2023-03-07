@@ -1,8 +1,8 @@
 import * as express from 'express';
 import teamRouter from './routes/TeamRouter';
-import userRouter from './routes/UserRouter';
-import matchRouter from './routes/MatchRouter';
-import leaderBoardRouter from './routes/LeaderBoardRouter';
+import userRoutes from './routes/UserRouter';
+import matchesRouter from './routes/MatchRouter';
+import leaderBoardRoutes from './routes/LeaderBoardRouter';
 
 class App {
   public app: express.Express;
@@ -27,9 +27,9 @@ class App {
     this.app.use(express.json());
     this.app.use(accessControl);
     this.app.use('/teams', teamRouter);
-    this.app.use('/login', userRouter);
-    this.app.use('/matches', matchRouter);
-    this.app.use('/leaderboard', leaderBoardRouter);
+    this.app.use('/login', userRoutes);
+    this.app.use('/matches', matchesRouter);
+    this.app.use('/leaderboard', leaderBoardRoutes);
   }
 
   public start(PORT: string | number):void {

@@ -10,8 +10,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Test 1', () => {
-    it('', async () => {
+describe('Email nao informado', () => {
+    it('Retornar status 400 e mensagem', async () => {
       const email = await chai
         .request(app)
         .post('/login')
@@ -20,8 +20,8 @@ describe('Test 1', () => {
       expect(email.body).to.deep.equal({ message: 'All fields must be filled' })
     });
   });
-describe('Test 2', () => {
-    it('', async () => {
+describe('Senha nao informada', () => {
+    it('Retornar status 400 e mensagem', async () => {
       const password = await chai
         .request(app)
         .post('/login')
@@ -30,8 +30,8 @@ describe('Test 2', () => {
       expect(password.body).to.deep.equal({ message: 'All fields must be filled' })
     });
   });
-  describe('Test 3', () => {
-      it('', async () => {
+  describe('dados corretos', () => {
+      it('Retornar status 200 e mensagem', async () => {
         const test = await chai
           .request(app)
           .post('/login')
@@ -40,8 +40,8 @@ describe('Test 2', () => {
         expect(test.body).to.have.property('token')
       });
   });
-describe('Test 4', () => {
-    it('', async () => {
+describe('dados invalidos', () => {
+    it('Retornar status 401 e mensagem', async () => {
       const data = await chai
         .request(app)
         .post('/login')

@@ -12,8 +12,8 @@ export default class UserService {
     const user = await this.model.findOne({ where: { email } });
     if (!user) return undefined;
 
-    const pwd = bcrypt.compareSync(password, user.password);
-    if (!pwd) return undefined;
+    const pass = bcrypt.compareSync(password, user.password);
+    if (!pass) return undefined;
 
     const token = Jwt.buildToken(email);
     return { token };

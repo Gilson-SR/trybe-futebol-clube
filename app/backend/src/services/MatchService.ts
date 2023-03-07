@@ -2,7 +2,7 @@ import { ModelStatic } from 'sequelize';
 import Matches from '../database/models/MatchModel';
 import Team from '../database/models/TeamModel';
 
-export default class MatchService {
+export default class MatchesService {
   model: ModelStatic<Matches> = Matches;
 
   async getAll(inProgress: unknown): Promise<Matches[]> {

@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-it('Test 1', async () => {
+it('testando leaderboard em home', async () => {
     const home = await chai
        .request(app).get('/leaderboard/home');
 

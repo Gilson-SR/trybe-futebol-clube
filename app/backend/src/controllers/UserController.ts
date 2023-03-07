@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UserService from '../services/UserService';
+// import validateToken from '../middlewares/validateToken';
 
 export default class UserController {
   private service: UserService;
@@ -9,10 +10,10 @@ export default class UserController {
 
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
-    const token = await this.service.login({ email, password });
+    const tokenJwt = await this.service.login({ email, password });
 
-    if (!token) res.status(401).json({ message: 'Invalid email or password' });
-    res.status(200).json(token);
+    if (!tokenJwt) res.status(401).json({ message: 'Invalid email or password' });
+    res.status(200).json(tokenJwt);
   }
 
   async loginRole(req: Request, res: Response) {
